@@ -9,11 +9,19 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.navigation.ui.setupWithNavController
+import com.capstone.enviro.api.User
+import com.capstone.enviro.api.UserService
 import com.capstone.enviro.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,36 +32,43 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
 
+        sampleApiCall()
+
+        val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
+
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_home, R.id.navigation_notification
+            )
+        )
         setupActionBarWithNavController(navController, appBarConfiguration)
-
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .setAnchorView(R.id.fab).show()
-        }
+        navView.setupWithNavController(navController)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
+    private fun sampleApiCall() {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://192.168.1.11:8080/") // Replace with your server's IP address
+//            .baseUrl("http://10.0.2.2:8080/") // For Android Emulator
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val userService = retrofit.create(UserService::class.java)
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
+        val call = userService.getUsers()
+        call.enqueue(object : Callback<User> {
+            override fun onResponse(
+                call: Call<User>,
+                response: Response<User>
+            ) {
+                if (response.isSuccessful) {
+                    val users = response.body()
+                    binding.testText.text = users.toString()
+                }
+            }
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                binding.testText.text = "Failed to fetch users: ${t.message}"
+            }
+        })
     }
 }

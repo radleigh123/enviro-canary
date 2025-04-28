@@ -3,7 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/navigation_home"
+    >
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.capstone.enviro.ui.home.HomeFragment"
+        android:label="Home Navigation"
+        tools:layout="@layout/fragment_home"
+        />
+
+    <fragment
+        android:id="@+id/navigation_notification"
+        android:name="com.capstone.enviro.ui.home.NotificationFragment"
+        android:label="Notification Navigation"
+        tools:layout="@layout/fragment_notification"
+        />
 
     <fragment
         android:id="@+id/FirstFragment"
