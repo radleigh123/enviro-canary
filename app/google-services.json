@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "657816544407",
+    "project_id": "easeplan-7594d",
+    "storage_bucket": "easeplan-7594d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657816544407:android:efe2edb49870bd5f66f5d2",
+        "android_client_info": {
+          "package_name": "com.capstone.enviro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiu4vX4ETNfKvwF3ewSSM_AxzYSybYb3U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657816544407:android:561f72be9699c43a66f5d2",
+        "android_client_info": {
+          "package_name": "com.intprog.easeplan"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiu4vX4ETNfKvwF3ewSSM_AxzYSybYb3U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657816544407:android:780eca3315e7ae7a66f5d2",
+        "android_client_info": {
+          "package_name": "com.intprog.vscan"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiu4vX4ETNfKvwF3ewSSM_AxzYSybYb3U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

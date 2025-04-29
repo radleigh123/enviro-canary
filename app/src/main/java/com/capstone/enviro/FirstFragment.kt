@@ -1,3 +1,4 @@
+/*
 package com.capstone.enviro
 
 import android.os.Bundle
@@ -8,9 +9,6 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.capstone.enviro.databinding.FragmentFirstBinding
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
 class FirstFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
@@ -41,4 +39,4 @@ class FirstFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-}
+}*/
