@@ -37,6 +37,18 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    sourceSets {
+        getByName("main") {
+            res {
+                srcDirs(
+                    "src\\main\\res",
+                    "src\\main\\res\\layouts\\account",
+                    "src\\main\\res\\layouts\\home",
+                    "src\\main\\res\\layouts\\settings"
+                )
+            }
+        }
+    }
 }
 
 dependencies {
