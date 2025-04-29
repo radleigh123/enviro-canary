@@ -35,13 +35,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set up your login logic here
-        // For example, you can set up click listeners for buttons
-        viewBinding.btnLogin.setOnClickListener {
-            // temp
-            /*val i = Intent(requireContext(), HomeActivity::class.java)
-            startActivity(i)*/
+        // Temporary... bypass login
+        findNavController().navigate(R.id.action_LoginFragment_to_HomeActivity)
 
+        viewBinding.btnLogin.setOnClickListener {
             val email = viewBinding.etEmail.text.toString()
             val password = viewBinding.etPassword.text.toString()
 
@@ -54,7 +51,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         findNavController().navigate(R.id.action_LoginFragment_to_HomeActivity)
-//                        finish()
                     } else {
                         val errorMessage = task.exception?.message
                         Snackbar.make(view, errorMessage ?: "Login failed", Snackbar.LENGTH_SHORT).show()

@@ -1,14 +1,14 @@
 package com.capstone.enviro
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.capstone.enviro.api.User
 import com.capstone.enviro.api.UserService
@@ -30,20 +30,31 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
+//        setSupportActionBar(binding.topAppBar)
 
-        sampleApiCall()
-
-        val navView: BottomNavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
+        val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_notification
+                R.id.navigation_home, R.id.navigation_notification, R.id.navigation_profile
             )
         )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+//        setupActionBarWithNavController(navController, appBarConfiguration)
+        binding.navView.setupWithNavController(navController)
+
+        // TODO: For now its broken
+        // Listener to change the title based on the selected destination
+        /*navController.addOnDestinationChangedListener { _, destination, _ ->
+            Log.i("NavDebug", "Destination changed to: ${destination.label}")
+            binding.topAppBar.title = when (destination.id) {
+                R.id.navigation_home -> "Home"
+                R.id.navigation_notification -> "Notification"
+                else -> "Profile"
+            }
+        }*/
+
+        sampleApiCall()
     }
 
     private fun sampleApiCall() {
