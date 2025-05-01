@@ -8,55 +8,57 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.capstone.enviro.R
-import com.capstone.enviro.ui.home.placeholder.PlaceholderContent
+import com.capstone.enviro.ui.home.notification.MyNotifItemRecyclerViewAdapter
+import com.capstone.enviro.ui.home.notification.model.Notification
+import com.capstone.enviro.ui.home.notification.placeholder.PlaceholderContent
 
-/**
- * A fragment representing a list of Items.
- */
 class NotificationFragment : Fragment() {
 
-    private var columnCount = 1
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: MyNotifItemRecyclerViewAdapter
+
+    // Test dummy data
+    private val dummyNotif = listOf(
+        Notification("10000", "John has a new message", "Hello, how are you?", "2023-10-01", "10:00 AM"),
+        Notification("10001", "Frank added you as a friend", "Let's connect!", "2023-10-02", "11:00 AM"),
+        Notification("10002", "Sarah liked your post", "Great post!", "2023-10-03", "12:00 PM"),
+        Notification("10003", "Mike commented on your photo", "Nice pic!", "2023-10-04", "1:00 PM"),
+        Notification("10004", "Anna shared your post", "Check it out!", "2023-10-05", "2:00 PM")
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_notification_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_notification, container, false)
 
-        // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = MyNotifItemRecyclerViewAdapter(PlaceholderContent.ITEMS)
+        recyclerView = view.findViewById(R.id.notification_recycler_view)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+
+        // TODO : Replace with actual data
+        adapter = MyNotifItemRecyclerViewAdapter(dummyNotif) { selectedItem ->
+            // Handle item click
+            val bundle = Bundle().apply {
+                putString("notificationId", selectedItem.id)
+                putString("notificationTitle", selectedItem.title)
+                putString("notificationMessage", selectedItem.message)
+                putString("notificationDate", selectedItem.date)
+                putString("notificationTime", selectedItem.time)
             }
+            // TODO: Add type or targetScreen to route accordingly
+            // TODO: Replace action with activity or needs fix
+            findNavController().navigate(R.id.action_notification_to_fragment_profile, bundle)
+            // To access the bundle on other side, `val notificationId = arguments?.getString("notificationId")`
         }
+        recyclerView.adapter = adapter
+
         return view
     }
 
-    companion object {
-
-        // TODO: Customize parameter argument names
-        const val ARG_COLUMN_COUNT = "column-count"
-
-        // TODO: Customize parameter initialization
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-            NotificationFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
-            }
-    }
 }

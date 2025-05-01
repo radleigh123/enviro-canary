@@ -41,18 +41,12 @@ class MainActivity : AppCompatActivity() {
             )
         )
 //        setupActionBarWithNavController(navController, appBarConfiguration)
-        binding.navView.setupWithNavController(navController)
 
-        // TODO: For now its broken
-        // Listener to change the title based on the selected destination
-        /*navController.addOnDestinationChangedListener { _, destination, _ ->
-            Log.i("NavDebug", "Destination changed to: ${destination.label}")
-            binding.topAppBar.title = when (destination.id) {
-                R.id.navigation_home -> "Home"
-                R.id.navigation_notification -> "Notification"
-                else -> "Profile"
-            }
-        }*/
+        // TODO Might have to transfer this to notification fragment
+        binding.navView.setupWithNavController(navController)
+        val badge = binding.navView.getOrCreateBadge(R.id.navigation_notification)
+        badge.isVisible = true
+        badge.number = 5 // TODO: Live update this number
 
         sampleApiCall()
     }
