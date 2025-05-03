@@ -1,11 +1,13 @@
 package com.capstone.enviro.ui.account
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.capstone.enviro.MainActivity
 import com.capstone.enviro.R
 import com.capstone.enviro.databinding.FragmentLoginBinding
 import com.google.android.material.snackbar.Snackbar
@@ -36,7 +38,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         super.onViewCreated(view, savedInstanceState)
 
         // Temporary... bypass login
-        findNavController().navigate(R.id.action_LoginFragment_to_HomeActivity)
+        startActivity(Intent(requireContext(), MainActivity::class.java))
+        requireActivity().finish()
 
         viewBinding.btnLogin.setOnClickListener {
             val email = viewBinding.etEmail.text.toString()
@@ -50,7 +53,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        findNavController().navigate(R.id.action_LoginFragment_to_HomeActivity)
+                        val intent = Intent(requireContext(), MainActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                        requireActivity().finish() // Close the login activity or Prevent going back to it
                     } else {
                         val errorMessage = task.exception?.message
                         Snackbar.make(view, errorMessage ?: "Login failed", Snackbar.LENGTH_SHORT).show()

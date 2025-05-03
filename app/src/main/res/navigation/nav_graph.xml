@@ -10,12 +10,7 @@
         android:id="@+id/navigation_home"
         android:name="com.capstone.enviro.ui.home.HomeFragment"
         tools:layout="@layout/fragment_home"
-        >
-        <action
-            android:id="@+id/action_home_to_activity_settings"
-            app:destination="@id/action_settings"
-            />
-    </fragment>
+        />
 
     <fragment
         android:id="@+id/navigation_notification"
@@ -26,6 +21,8 @@
         <action
             android:id="@+id/action_notification_to_fragment_profile"
             app:destination="@id/navigation_profile"
+            app:popUpTo="@id/navigation_notification"
+            app:popUpToInclusive="false"
             />
 
     </fragment>
@@ -35,12 +32,5 @@
         android:name="com.capstone.enviro.ui.home.ProfileFragment"
         tools:layout="@layout/fragment_profile"
         />
-
-    <activity
-        android:id="@+id/action_settings"
-        android:name="com.capstone.enviro.ui.settings.SettingsActivity"
-        tools:layout="@layout/activity_settings"
-        />
-
 
 </navigation>

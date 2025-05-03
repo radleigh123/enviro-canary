@@ -13,10 +13,8 @@ import com.capstone.enviro.ui.home.notification.model.Notification
  * TODO: Replace the implementation with code for your data type.
  */
 class MyNotifItemRecyclerViewAdapter(
-
     private val values: List<Notification>,
     private val onItemClick: (Notification) -> Unit
-
 ) : RecyclerView.Adapter<MyNotifItemRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

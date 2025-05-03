@@ -1,18 +1,16 @@
 package com.capstone.enviro.ui.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.capstone.enviro.R
 import com.capstone.enviro.ui.home.notification.MyNotifItemRecyclerViewAdapter
 import com.capstone.enviro.ui.home.notification.model.Notification
-import com.capstone.enviro.ui.home.notification.placeholder.PlaceholderContent
 
 class NotificationFragment : Fragment() {
 
@@ -38,6 +36,8 @@ class NotificationFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_notification, container, false)
 
+        Log.d("NotificationFragment", "onCreateView called")
+
         recyclerView = view.findViewById(R.id.notification_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
@@ -52,8 +52,8 @@ class NotificationFragment : Fragment() {
                 putString("notificationTime", selectedItem.time)
             }
             // TODO: Add type or targetScreen to route accordingly
-            // TODO: Replace action with activity or needs fix
-            findNavController().navigate(R.id.action_notification_to_fragment_profile, bundle)
+            // TODO: BROKEN (later on if have time)
+            // findNavController().navigate(R.id.navigation_profile, bundle, navOptions)
             // To access the bundle on other side, `val notificationId = arguments?.getString("notificationId")`
         }
         recyclerView.adapter = adapter

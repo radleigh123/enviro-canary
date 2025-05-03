@@ -50,7 +50,10 @@ class HomeFragment : Fragment() {
                     R.id.action_settings -> {
                         // Handle settings action
                         Log.d("HomeFragment", "Settings clicked")
-                        findNavController().navigate(R.id.action_home_to_activity_settings)
+
+                        val intent = Intent(requireContext(), SettingsActivity::class.java)
+                        startActivity(intent)
+
                         true
                     }
                     else -> false

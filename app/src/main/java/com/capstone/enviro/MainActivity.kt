@@ -40,13 +40,12 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home, R.id.navigation_notification, R.id.navigation_profile
             )
         )
+
 //        setupActionBarWithNavController(navController, appBarConfiguration)
 
-        // TODO Might have to transfer this to notification fragment
         binding.navView.setupWithNavController(navController)
-        val badge = binding.navView.getOrCreateBadge(R.id.navigation_notification)
-        badge.isVisible = true
-        badge.number = 5 // TODO: Live update this number
+        // TODO: Later on, live data for notification count
+        updateNotificationBadge(5)
 
         sampleApiCall()
     }
@@ -75,5 +74,11 @@ class MainActivity : AppCompatActivity() {
                 binding.testText.text = "Failed to fetch users: ${t.message}"
             }
         })
+    }
+
+    private fun updateNotificationBadge(count: Int) {
+        val badge = binding.navView.getOrCreateBadge(R.id.navigation_notification)
+        badge.isVisible = count > 0
+        badge.number = count
     }
 }
