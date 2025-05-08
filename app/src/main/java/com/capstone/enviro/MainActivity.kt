@@ -8,8 +8,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.capstone.enviro.data.remote.RetrofitClient
 import com.capstone.enviro.data.remote.TokenManager
-import com.capstone.enviro.domain.User
-import com.capstone.enviro.domain.UserService
+import com.capstone.enviro.domain.model.User
+import com.capstone.enviro.domain.service.UserService
 import com.capstone.enviro.databinding.ActivityMainBinding
 import retrofit2.Call
 import retrofit2.Callback

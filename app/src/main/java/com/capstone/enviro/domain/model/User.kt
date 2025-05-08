@@ -1,9 +1,7 @@
-package com.capstone.enviro.domain
+package com.capstone.enviro.domain.model
 
-import kotlinx.serialization.SerialName
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
-import retrofit2.Call
-import retrofit2.http.GET
 
 @Serializable
 //@JsonIgnoreUnknownKeys
@@ -23,17 +21,12 @@ data class User(
 
 @Serializable
 data class ActivityLog(
-    val activity: String,
+    val action: String,
     val timestamp: TimeStamp
 )
 
 @Serializable
 data class TimeStamp(
-    @SerialName("\$date")
+    @SerializedName("\$date")
     val date: String
 )
-
-interface UserService {
-    @GET("/users")
-    fun getUsers(): Call<List<User>>
-}
