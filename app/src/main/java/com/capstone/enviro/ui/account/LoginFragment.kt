@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.capstone.enviro.MainActivity
 import com.capstone.enviro.R
+import com.capstone.enviro.SessionManager
 import com.capstone.enviro.data.remote.TokenManager
 import com.capstone.enviro.databinding.FragmentLoginBinding
 import com.google.android.material.snackbar.Snackbar
@@ -79,6 +80,21 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         Snackbar.make(view, errorMessage ?: "Login failed", Snackbar.LENGTH_SHORT).show()
                     }
                 }
+
+            // Save session token
+            auth.currentUser?.let {
+                val uid = it.uid
+                val email = it.email
+                val displayName = it.displayName ?: "No name"
+
+                SessionManager.saveUserSession(
+                    context = requireContext(),
+                    uid = uid,
+                    email = email,
+                    displayName = displayName
+                )
+            }
+
         }
 
         viewBinding.tvForgotPassword.setOnClickListener {
