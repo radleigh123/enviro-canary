@@ -2,6 +2,7 @@ package com.capstone.enviro.ui.account
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.capstone.enviro.MainActivity
 import com.capstone.enviro.R
+import com.capstone.enviro.data.remote.TokenManager
 import com.capstone.enviro.databinding.FragmentLoginBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -24,13 +26,17 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private val viewBinding get() = _binding!!
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
+
         auth = FirebaseAuth.getInstance()
+        tokenManager = TokenManager(requireContext())
+
         return viewBinding.root
     }
 
@@ -38,8 +44,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         super.onViewCreated(view, savedInstanceState)
 
         // Temporary... bypass login
-        startActivity(Intent(requireContext(), MainActivity::class.java))
-        requireActivity().finish()
+//        startActivity(Intent(requireContext(), MainActivity::class.java))
+//        requireActivity().finish()
 
         viewBinding.btnLogin.setOnClickListener {
             val email = viewBinding.etEmail.text.toString()
@@ -53,10 +59,21 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        val intent = Intent(requireContext(), MainActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                        startActivity(intent)
-                        requireActivity().finish() // Close the login activity or Prevent going back to it
+                        getUserToken { idToken ->
+                            if (idToken != null) {
+                                // Save the token using TokenManager
+                                tokenManager.saveToken(idToken)
+
+                                Log.d("LoginFragment", "Login successful")
+
+                                val intent = Intent(requireContext(), MainActivity::class.java)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                startActivity(intent)
+                                requireActivity().finish() // Close the login activity or Prevent going back to it
+                            } else {
+                                Snackbar.make(view, "Failed to get authentication token", Snackbar.LENGTH_SHORT).show()
+                            }
+                        }
                     } else {
                         val errorMessage = task.exception?.message
                         Snackbar.make(view, errorMessage ?: "Login failed", Snackbar.LENGTH_SHORT).show()
@@ -76,5 +93,19 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun getUserToken(onTokenReceived: (String?) -> Unit) {
+        auth.currentUser?.getIdToken( true)
+            ?.addOnCompleteListener { tokenTask ->
+                if (tokenTask.isSuccessful) {
+                    val idToken = tokenTask.result?.token
+                    Log.d("LoginFragment", "ID Token: $idToken")
+                    onTokenReceived(idToken)
+                } else {
+                    Log.e("LoginFragment", "Failed to get ID token: ${tokenTask.exception?.message}")
+                    onTokenReceived(null)
+                }
+            } ?: onTokenReceived(null)
     }
 }

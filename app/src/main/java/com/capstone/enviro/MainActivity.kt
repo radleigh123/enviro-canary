@@ -2,23 +2,18 @@ package com.capstone.enviro
 
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.capstone.enviro.api.User
-import com.capstone.enviro.api.UserService
+import com.capstone.enviro.data.remote.RetrofitClient
+import com.capstone.enviro.data.remote.TokenManager
+import com.capstone.enviro.domain.User
+import com.capstone.enviro.domain.UserService
 import com.capstone.enviro.databinding.ActivityMainBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -51,18 +46,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun sampleApiCall() {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.1.11:8080/") // Replace with your server's IP address
-//            .baseUrl("http://10.0.2.2:8080/") // For Android Emulator
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val userService = retrofit.create(UserService::class.java)
+        val tokenManager = TokenManager(this)
+        val userService = RetrofitClient.createService<UserService>(tokenManager)
 
         val call = userService.getUsers()
-        call.enqueue(object : Callback<User> {
+        call.enqueue(object : Callback<List<User>> {
             override fun onResponse(
-                call: Call<User>,
-                response: Response<User>
+                call: Call<List<User>>,
+                response: Response<List<User>>
             ) {
                 if (response.isSuccessful) {
                     val users = response.body()
@@ -70,7 +61,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<User>, t: Throwable) {
+            override fun onFailure(call: Call<List<User>>, t: Throwable) {
+                Log.e("MainActivity", "Failed to fetch users", t)
                 binding.testText.text = "Failed to fetch users: ${t.message}"
             }
         })
