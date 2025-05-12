@@ -6,4 +6,5 @@
     </style>
 
     <style name="Theme.Enviro" parent="Base.Theme.Enviro" />
+    <item name="materialCardViewStyle" type="style">@style/Widget.MaterialComponents.CardView</item>
 </resources>

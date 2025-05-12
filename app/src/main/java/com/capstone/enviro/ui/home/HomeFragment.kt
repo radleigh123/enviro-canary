@@ -37,7 +37,7 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        binding.topAppBar.title = "Home Space"
+        binding.topAppBar.title = "Home"
 
         (requireActivity() as AppCompatActivity).setSupportActionBar(binding.topAppBar)
         requireActivity().addMenuProvider(object : MenuProvider {

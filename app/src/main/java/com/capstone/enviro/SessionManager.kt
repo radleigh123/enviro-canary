@@ -1,6 +1,7 @@
 package com.capstone.enviro
 
 import android.content.Context
+import android.util.Log
 import androidx.core.content.edit
 
 object SessionManager {
@@ -25,6 +26,16 @@ object SessionManager {
             putString("name", displayName)
             apply()
         }
+        Log.d("SessionManager", "User session saved: uid=$uid, email=$email, name=$displayName")
+    }
+
+    fun getUserSession(context: Context): Map<String, String?> {
+        val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        return mapOf(
+            KEY_UID to prefs.getString(KEY_UID, null),
+            "email" to prefs.getString("email", null),
+            "name" to prefs.getString("name", null)
+        )
     }
 
     fun clearUserSession(context: Context) {

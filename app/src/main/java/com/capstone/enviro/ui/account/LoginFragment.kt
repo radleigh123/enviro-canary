@@ -66,6 +66,19 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                 tokenManager.saveToken(idToken)
 
                                 Log.d("LoginFragment", "Login successful")
+                                // TODO: displayName is empty
+                                auth.currentUser?.let {
+                                    val uid = it.uid
+                                    val email = it.email
+                                    val displayName = it.displayName ?: "No name"
+
+                                    SessionManager.saveUserSession(
+                                        context = requireContext(),
+                                        uid = uid,
+                                        email = email,
+                                        displayName = displayName
+                                    )
+                                }
 
                                 val intent = Intent(requireContext(), MainActivity::class.java)
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -80,21 +93,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         Snackbar.make(view, errorMessage ?: "Login failed", Snackbar.LENGTH_SHORT).show()
                     }
                 }
-
-            // Save session token
-            auth.currentUser?.let {
-                val uid = it.uid
-                val email = it.email
-                val displayName = it.displayName ?: "No name"
-
-                SessionManager.saveUserSession(
-                    context = requireContext(),
-                    uid = uid,
-                    email = email,
-                    displayName = displayName
-                )
-            }
-
         }
 
         viewBinding.tvForgotPassword.setOnClickListener {

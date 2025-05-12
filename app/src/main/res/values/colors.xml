@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
     <color name="accent">#E66A3C</color>
     <color name="accent_50">#80E66A3C</color>
+    <color name="primaryColor">#6200EE</color>
+    <color name="red">#D32F2F</color>
+    <color name="blue">#1976D2</color>
+    <color name="green">#388E3C</color>
+    <color name="white">#FFFFFF</color>
+    <color name="transparent">#00000000</color>
 
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
@@ -17,4 +22,7 @@
     <color name="primaryText">#212121</color>
     <color name="secondaryText">#757575</color>
     <color name="linkText">#1E88E5</color>
+
+    <color name="heroGradientStart">#8E24AA</color> <!-- Purple -->
+    <color name="heroGradientEnd">#CE93D8</color>   <!-- Optional if adding gradient manually -->
 </resources>
