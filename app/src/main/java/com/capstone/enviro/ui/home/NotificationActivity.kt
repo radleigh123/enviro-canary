@@ -64,7 +64,7 @@ class NotificationActivity : AppCompatActivity() {
         binding = ActivityNotificationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
+        setSupportActionBar(binding.topAppBarNotif)
 
         recyclerView = binding.notificationRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -81,5 +81,11 @@ class NotificationActivity : AppCompatActivity() {
             }
         }
         recyclerView.adapter = adapter
+    }
+
+    // Back button
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
     }
 }

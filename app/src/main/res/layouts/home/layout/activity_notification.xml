@@ -13,9 +13,13 @@
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/topAppBarNotif"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:title="@string/top_notifications"
+            app:navigationIcon="@drawable/ic_back_24"
+            />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -31,25 +35,14 @@
             android:layout_width="match_parent"
             >
 
-            <TextView
-                android:id="@+id/notification_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Notifications"
-                android:textSize="24sp"
-                android:textColor="@color/black"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/notification_recycler_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/notification_title"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:paddingHorizontal="16dp"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
