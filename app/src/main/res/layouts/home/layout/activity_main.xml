@@ -7,14 +7,21 @@
     android:fitsSystemWindows="true"
     >
 
-    <TextView
-        android:id="@+id/testText"
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="THIS WILL CHANGE"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:layout_gravity="center" />
+        >
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:title="@string/home"
+            app:menu="@menu/top_app_bar"
+            />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content" />
 
@@ -24,8 +31,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
-        android:background="?android:attr/windowBackground"
         android:layout_gravity="bottom"
+        app:itemIconTint="#5D7B2E"
         app:menu="@menu/bottom_nav_menu"
         />
 

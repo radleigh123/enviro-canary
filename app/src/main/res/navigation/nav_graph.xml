@@ -13,24 +13,27 @@
         />
 
     <fragment
-        android:id="@+id/navigation_notification"
-        android:name="com.capstone.enviro.ui.home.NotificationFragment"
-        tools:layout="@layout/fragment_notification"
-        >
-
-        <action
-            android:id="@+id/action_notification_to_fragment_profile"
-            app:destination="@id/navigation_profile"
-            app:popUpTo="@id/navigation_notification"
-            app:popUpToInclusive="false"
-            />
-
-    </fragment>
+        android:id="@+id/navigation_map"
+        android:name="com.capstone.enviro.ui.home.MapsFragment"
+        tools:layout="@layout/fragment_maps"
+        />
 
     <fragment
-        android:id="@+id/navigation_profile"
-        android:name="com.capstone.enviro.ui.home.ProfileFragment"
-        tools:layout="@layout/fragment_profile"
+        android:id="@+id/navigation_record"
+        android:name="com.capstone.enviro.ui.home.RecordFragment"
+        tools:layout="@layout/fragment_record"
+        />
+
+    <fragment
+        android:id="@+id/navigation_activities"
+        android:name="com.capstone.enviro.ui.home.ActivityFragment"
+        tools:layout="@layout/fragment_activity"
+        />
+
+    <fragment
+        android:id="@+id/navigation_you"
+        android:name="com.capstone.enviro.ui.home.YouFragment"
+        tools:layout="@layout/fragment_you"
         />
 
 </navigation>
