@@ -1,25 +1,16 @@
 package com.capstone.enviro.ui.home
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.capstone.enviro.R
 import com.capstone.enviro.databinding.ActivityNotificationBinding
-import com.capstone.enviro.ui.home.notification.MyNotifItemRecyclerViewAdapter
+import com.capstone.enviro.ui.home.notification.adapter.MyNotifItemRecyclerViewAdapter
 import com.capstone.enviro.ui.home.notification.model.Notification
 
 class NotificationActivity : AppCompatActivity() {
-
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityNotificationBinding
-
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MyNotifItemRecyclerViewAdapter
 

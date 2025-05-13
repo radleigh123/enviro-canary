@@ -1,15 +1,14 @@
-package com.capstone.enviro.ui.home.notification
+package com.capstone.enviro.ui.home.notification.adapter
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-
+import androidx.recyclerview.widget.RecyclerView
 import com.capstone.enviro.databinding.ItemNotificationBinding
 import com.capstone.enviro.ui.home.notification.model.Notification
 
 /**
- * [RecyclerView.Adapter] that can display a [com.capstone.enviro.ui.home.notification.model.Notification].
+ * [androidx.recyclerview.widget.RecyclerView.Adapter] that can display a [com.capstone.enviro.ui.home.notification.model.Notification].
  * TODO: Replace the implementation with code for your data type.
  */
 class MyNotifItemRecyclerViewAdapter(
