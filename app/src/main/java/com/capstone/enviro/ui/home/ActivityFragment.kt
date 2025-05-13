@@ -5,9 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.capstone.enviro.MainActivity
 import com.capstone.enviro.R
+import com.capstone.enviro.databinding.FragmentActivityBinding
 
 class ActivityFragment : Fragment() {
+    private var _binding: FragmentActivityBinding? =null
+    private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -16,7 +21,9 @@ class ActivityFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_activity, container, false)
+        _binding = FragmentActivityBinding.inflate(inflater, container, false)
+         (activity as MainActivity).supportActionBar?.show()
+
+        return binding.root
     }
 }

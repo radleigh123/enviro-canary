@@ -53,9 +53,31 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        binding.navView.setupWithNavController(navController)
+        // Disable automatic navigation setup
+        // binding.navView.setupWithNavController(navController)
+        // Disable record item
+        binding.navView.menu.findItem(R.id.navigation_record).isEnabled = false
+
+        // Set up custom navigation handler
+        binding.navView.setOnItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.navigation_home,
+                R.id.navigation_map,
+                R.id.navigation_activities,
+                R.id.navigation_you -> {
+                    navController.navigate(menuItem.itemId)
+                    true
+                }
+                R.id.navigation_record -> false // Disable navigation for record item
+                else -> false
+            }
+        }
+
+        // Set initial selected item
+        binding.navView.selectedItemId = R.id.navigation_home
+
         // TODO: Later on, live data for notification count
-//        updateNotificationBadge(5)
+        // updateNotificationBadge(5)
 
         sampleApiCall()
     }
@@ -89,15 +111,6 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
-    }
-
-    private fun getSlideNavOptions(): NavOptions {
-        return NavOptions.Builder()
-            .setEnterAnim(R.anim.slide_in_right)
-            .setExitAnim(R.anim.slide_out_left)
-            .setPopEnterAnim(R.anim.slide_in_left)
-            .setPopExitAnim(R.anim.slide_out_right)
-            .build()
     }
 
     private fun sampleApiCall() {

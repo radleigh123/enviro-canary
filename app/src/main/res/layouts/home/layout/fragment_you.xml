@@ -11,7 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="10dp"
+        android:paddingHorizontal="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="90dp"
         >
 
         <!--Header-->
@@ -212,6 +214,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="10dp"
+            android:layout_marginVertical="15dp"
             >
             <LinearLayout
                 android:layout_width="match_parent"
@@ -304,6 +307,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="10dp"
+            android:layout_marginVertical="15dp"
             >
 
             <LinearLayout
