@@ -1,26 +1,17 @@
 package com.capstone.enviro.ui.home
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import com.capstone.enviro.R
+import com.capstone.enviro.MainActivity
 import com.capstone.enviro.SessionManager
-import com.capstone.enviro.data.remote.RetrofitClient
-import com.capstone.enviro.data.remote.TokenManager
-import com.capstone.enviro.databinding.FragmentProfileBinding
-import com.capstone.enviro.domain.service.UserService
+import com.capstone.enviro.databinding.FragmentYouBinding
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ProfileFragment : Fragment() {
-    private var _binding: FragmentProfileBinding? = null
+class YouFragment : Fragment() {
+    private var _binding: FragmentYouBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,9 +22,16 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        _binding = FragmentYouBinding.inflate(inflater, container, false)
+        // Hide top app bar from MainActivity
+        (activity as MainActivity).supportActionBar?.hide()
 
         updateUserData()
+
+        binding.btnEdit.setOnClickListener {
+            val intent = Intent(requireContext(), YouEditActivity::class.java)
+            startActivity(intent)
+        }
 
         return binding.root
     }
@@ -43,11 +41,11 @@ class ProfileFragment : Fragment() {
         val context = requireContext()
         val user: Map<String, String?> = SessionManager.getUserSession(context)
         val uid = user["uid"] ?: "NULL".toString()
-        val name = user["name"] ?: "NULL".toString()
+
+        val name = user["name"] ?: uid
         val email = user["email"] ?: "NULL".toString()
 
-        binding.tvTopCardId.text = uid
-        binding.tvTopCardName.text = name
-        binding.tvTopCardEmail.text = email
+        binding.tvName.text = name
+        binding.tvEmail.text = email
     }
 }

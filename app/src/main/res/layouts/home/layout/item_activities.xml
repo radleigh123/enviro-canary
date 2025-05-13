@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingHorizontal="15dp"
+    android:paddingVertical="20dp"
+    android:background="@color/white"
+    android:layout_marginBottom="4dp"
+    >
+
+    <ImageView
+        android:id="@+id/iv_activities_icon"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:src="@drawable/ic_profile_96"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_activities_icon"
+        android:layout_marginStart="10dp"
+        >
+
+        <TextView
+            android:id="@+id/activities_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sample Notification Title"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginVertical="5dp"
+            />
+
+        <TextView
+            android:id="@+id/activities_days"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="This is a sample notification message."
+            android:textSize="14sp"
+            android:gravity="end"
+            />
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:id="@+id/activities_progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="0"
+            />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

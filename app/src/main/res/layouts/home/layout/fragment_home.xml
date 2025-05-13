@@ -8,23 +8,10 @@
     tools:context=".ui.home.HomeFragment"
     >
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/topAppBar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        app:title="DASHBOARD"
-        app:titleTextColor="@android:color/white"
-        app:navigationIcon="@drawable/ic_home"
-        app:menu="@menu/menu_main"
-        />
-
     <!-- Main Scrollable View -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:fillViewport="true">
 
@@ -76,7 +63,7 @@
                         android:id="@+id/heroIcon"
                         android:layout_width="64dp"
                         android:layout_height="64dp"
-                        android:src="@drawable/ic_home"
+                        android:src="@drawable/ic_home_24"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentBottom="true"
                         android:contentDescription="Icon"
@@ -105,7 +92,7 @@
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/ic_home"
+                        android:src="@drawable/ic_home_24"
                         android:contentDescription="Distance"
                         app:tint="@color/green" />
 
@@ -155,7 +142,7 @@
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/ic_home"
+                        android:src="@drawable/ic_home_24"
                         android:contentDescription="Heart Rate"
                         app:tint="@color/red" />
 

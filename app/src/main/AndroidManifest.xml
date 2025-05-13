@@ -15,8 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Enviro">
         <activity
-            android:name=".ui.settings.SettingsActivity"
+            android:name=".ui.home.YouEditActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.home.NotificationActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Enviro" />
         <activity
             android:name=".ui.account.AccountActivity"
             android:exported="true">
@@ -29,7 +33,10 @@
         <activity
             android:name=".MainActivity"
             android:exported="false"
-            android:theme="@style/Theme.Enviro"></activity>
+            android:theme="@style/Theme.Enviro" />
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

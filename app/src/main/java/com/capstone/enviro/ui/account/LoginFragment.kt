@@ -66,7 +66,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                 tokenManager.saveToken(idToken)
 
                                 Log.d("LoginFragment", "Login successful")
-                                // TODO: displayName is empty
+                                // TODO: displayName is empty, possibility because Firebase Auth has no displayName
                                 auth.currentUser?.let {
                                     val uid = it.uid
                                     val email = it.email
