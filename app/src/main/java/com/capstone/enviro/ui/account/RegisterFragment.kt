@@ -16,6 +16,7 @@ import com.capstone.enviro.domain.model.TimeStamp
 import com.capstone.enviro.domain.model.ActivityLog
 import com.capstone.enviro.domain.model.User
 import com.capstone.enviro.domain.service.UserService
+import com.capstone.enviro.utils.getMongoDBDate
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -109,26 +110,18 @@ class RegisterFragment : Fragment() {
         val tokenManager = TokenManager(requireContext())
         val userService = RetrofitClient.createService<UserService>(tokenManager)
 
-        // Converting to MongoDB date format
-        // MongoDB date format: {"$date": "2023-10-01T12:00:00.000Z"}
-        // TODO: Clean up this code
-        val isoDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.US)
-        isoDateFormat.timeZone = TimeZone.getTimeZone("UTC")
-        val currentTimeFormatted = isoDateFormat.format(Date())
-        val currentTime = TimeStamp(date = currentTimeFormatted)
-
         val user = User(
             userId = userId,
             email = email,
             name = name,
-            profilePicture = "https://example.com/profile.jpg", // TODO: Image Placeholder URL
+            profilePicture = null, // TODO: Image Placeholder URL
             roles = listOf("USER"),
             accountStatus = "ACTIVE",
-            activityLog = listOf(ActivityLog(action = "REGISTRATION", currentTime)),
-            lastLogin = currentTime,
+            activityLog = listOf(ActivityLog(action = "REGISTRATION", getMongoDBDate())),
+            lastLogin = getMongoDBDate(),
             loginProvider = "FIREBASE",
-            createdAt = currentTime,
-            updatedAt = currentTime
+            createdAt = getMongoDBDate(),
+            updatedAt = getMongoDBDate()
         )
 
         val call = userService.createUser(user)
