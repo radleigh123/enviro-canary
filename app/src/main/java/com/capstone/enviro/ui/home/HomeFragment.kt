@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
+import com.capstone.enviro.MainActivity
 import com.capstone.enviro.R
 import com.capstone.enviro.databinding.FragmentHomeBinding
 import com.capstone.enviro.ui.settings.SettingsActivity
@@ -32,6 +33,7 @@ class HomeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        (activity as MainActivity).supportActionBar?.show()
 
         return binding.root
     }

@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Enviro">
         <activity
+            android:name=".ui.home.YouEditActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.home.NotificationActivity"
             android:exported="false"
             android:theme="@style/Theme.Enviro" />
