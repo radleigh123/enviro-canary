@@ -1,9 +1,11 @@
 package com.capstone.enviro.domain.model
 
-import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
+import org.bson.types.ObjectId
 
 /*
+DOCUMENT SAMPLE
 {
     "_id": {
         "$oid": "6822843f5e65dd4913a66c07"
@@ -75,16 +77,18 @@ import kotlinx.serialization.Serializable
 @Serializable
 //@JsonIgnoreUnknownKeys
 data class User(
-    val userId: String,
-    val email: String,
-    val name: String,
+    @SerializedName("_id")
+    val id: MongoId? = null,
+    val userId: String? = null,
+    val email: String? = null,
+    val name: String? = null,
     val profilePicture: String? = null,
     val roles: List<String> = listOf("user"),
     val accountStatus: String = "active",
     val activityLog: List<ActivityLog> = listOf(),
     val lastLogin: TimeStamp? = null,
-    val loginProvider: String,
-    val createdAt: TimeStamp,
+    val loginProvider: String? = null,
+    val createdAt: TimeStamp? = null,
     val updatedAt: TimeStamp? = null,
     val physicalAttributes: PhysicalAttributes? = null,
     val contactInfo: ContactInfo? = null,
@@ -93,6 +97,12 @@ data class User(
     val employment: Employment? = null,
     val education: Education? = null,
     val biography: String? = null
+)
+
+@Serializable
+data class MongoId(
+    @SerializedName("\$oid")
+    val oid: String
 )
 
 @Serializable

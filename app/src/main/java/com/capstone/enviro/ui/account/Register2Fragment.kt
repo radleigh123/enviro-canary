@@ -14,6 +14,7 @@ import com.capstone.enviro.databinding.FragmentRegister2Binding
 import com.capstone.enviro.domain.model.ActivityLog
 import com.capstone.enviro.domain.model.Address
 import com.capstone.enviro.domain.model.ContactInfo
+import com.capstone.enviro.domain.model.MongoId
 import com.capstone.enviro.domain.model.User
 import com.capstone.enviro.domain.service.UserService
 import com.capstone.enviro.utils.getMongoDBDate
@@ -24,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.capstone.enviro.R
 
 class Register2Fragment : Fragment() {
     private var _binding: FragmentRegister2Binding? = null
@@ -78,29 +80,21 @@ class Register2Fragment : Fragment() {
                     if (task.isSuccessful) {
                         val firebaseUser = auth.currentUser
 
-                        // Store firebase user uid to database
-                        getUserToken { idToken ->
-                            if (idToken != null) {
-                                firebaseUser?.let {
-                                    val userId = it.uid
-                                    storeUserData(
-                                        userId = userId,
-                                        email = email,
-                                        name = "$fName $lName",
-                                        phone = phone,
-                                        street = street,
-                                        city = city,
-                                        province = province,
-                                        country = country,
-                                        zipCode = zipCode
-                                    )
-                                }
-
-                                Log.d("RegisterFragment", "Registration successful")
-                                startActivity(Intent(activity, AccountActivity::class.java))
-                                activity?.finish()
-                            }
+                        firebaseUser?.let {
+                            storeUserData(
+                                email = email,
+                                name = "$fName $lName",
+                                phone = phone,
+                                street = street,
+                                city = city,
+                                province = province,
+                                country = country,
+                                zipCode = zipCode
+                            )
                         }
+
+                        Log.d("RegisterFragment", "Registration successful")
+                        findNavController().navigate(R.id.action_Register2Fragment_to_LoginFragment)
                     } else {
                         Log.w("RegisterFragment", "Registration failed", task.exception)
                         if (task.exception is FirebaseAuthInvalidCredentialsException) {
@@ -120,7 +114,6 @@ class Register2Fragment : Fragment() {
         viewBinding.btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
-
     }
 
     override fun onDestroyView() {
@@ -129,7 +122,6 @@ class Register2Fragment : Fragment() {
     }
 
     private fun storeUserData(
-        userId: String,
         email: String,
         name: String,
         phone: String,
@@ -143,10 +135,8 @@ class Register2Fragment : Fragment() {
         val userService = RetrofitClient.createService<UserService>(tokenManager)
 
         val user = User(
-            userId = userId,
             email = email,
             name = name,
-            profilePicture = null, // TODO: Image Placeholder URL
             roles = listOf("USER"),
             accountStatus = "ACTIVE",
             activityLog = listOf(
@@ -191,24 +181,5 @@ class Register2Fragment : Fragment() {
                 Log.e("RegisterFragment2", "Failed to store user data: ${t.message}")
             }
         })
-    }
-
-    /**
-     * Get the user's ID token from Firebase Authentication.
-     * @param onTokenReceived Callback function to handle the received token.
-     */
-    private fun getUserToken(onTokenReceived: (String?) -> Unit) {
-        auth.currentUser?.getIdToken( true)
-            ?.addOnCompleteListener { tokenTask ->
-                if (tokenTask.isSuccessful) {
-                    val idToken = tokenTask.result?.token
-                    Log.d("RegisterFragment", "ID Token: $idToken")
-                    onTokenReceived(idToken)
-                } else {
-                    Log.e("RegisterFragment", "Failed to get ID token: ${tokenTask.exception?.message}")
-                    onTokenReceived(null)
-                }
-            } ?: onTokenReceived(null)
-        return
     }
 }

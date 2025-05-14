@@ -40,12 +40,26 @@ class YouFragment : Fragment() {
         // Get from SessionManager
         val context = requireContext()
         val user: Map<String, String?> = SessionManager.getUserSession(context)
-        val uid = user["uid"] ?: "NULL".toString()
 
+        // Basic info
+        val uid = user["uid"] ?: "NULL".toString()
         val name = user["name"] ?: uid
         val email = user["email"] ?: "NULL".toString()
 
+        // Contact info
+        val phone = user["phone"] ?: "NULL".toString()
+        val street = user["street"] ?: "NULL".toString()
+        val city = user["city"] ?: "NULL".toString()
+        val province = user["province"] ?: "NULL".toString()
+        val country = user["country"] ?: "NULL".toString()
+        val zipCode = user["zipCode"] ?: "NULL".toString()
+
         binding.tvName.text = name
         binding.tvEmail.text = email
+        binding.tvPersonalPhone.text = phone
+        binding.tvPersonalAddressStreet.text = street
+        binding.tvPersonalAddressCity.text = city
+        binding.tvPersonalAddressProvince.text = province
+        binding.tvPersonalAddressCountry.text = country
     }
 }

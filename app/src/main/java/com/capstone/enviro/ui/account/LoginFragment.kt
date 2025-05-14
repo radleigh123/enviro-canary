@@ -69,32 +69,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         getUserToken { idToken ->
                             if (idToken != null) {
                                 tokenManager.saveToken(idToken)
-/*
-                                // TODO: displayName is empty, possibility because Firebase Auth has no displayName
-                                auth.currentUser?.let {
-                                    val uid = it.uid
-                                    val email = it.email
-                                    val displayName = it.displayName ?: "No name"
 
-                                    SessionManager.saveUserSession(
-                                        context = requireContext(),
-                                        uid = uid,
-                                        email = email,
-                                        displayName = displayName
-                                    )
-                                }
-*/
-                                var user: User?
+                                SessionManager.saveUserIdSession(requireContext(), idToken)
 
-                                val currentUser = auth.currentUser
-                                currentUser?.let {
-                                    val uid = it.uid
-                                    val email = it.email ?: ""
-
-                                    user = getLoggedInUser(uid)
-
-                                    SessionManager.saveUserSession(context = requireContext(), user = user)
-                                    Log.d("LoginFragment", "User session saved: uid=$uid, email=$email")
+                                val currentUser = auth.currentUser?.let {
+                                    saveLoggedUser(it.email.toString())
                                 }
 
                                 Log.d("LoginFragment", "Login successful")
@@ -127,19 +106,21 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         _binding = null
     }
 
-    private fun getLoggedInUser(uid: String): User? {
-        var user: User? = null
-
+    private fun saveLoggedUser(email: String) {
         val tokenManager = TokenManager(requireContext())
         val userService = RetrofitClient.createService<UserService>(tokenManager)
 
-        val call = userService.getUserById(uid)
+        var user: User? = null
+
+        val call = userService.getUserByEmail(email)
         call.enqueue(object: Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 // TODO: TODO("SAMPLE FORCED COMMENT")
                 if (response.isSuccessful) {
                     user = response.body()
                     Log.d("LoginFragment", "User retrieved: $user")
+                    SessionManager.saveUserSession(requireContext(), user)
+                    SessionManager.saveIdSession(requireContext(), user?.id.toString())
                 } else {
                     Log.e("LoginFragment", "Failed to retrieve user: ${response.errorBody()?.string()}")
                 }
@@ -149,22 +130,24 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 Log.e("LoginFragment", "Error retrieving user: ${t.message}")
             }
         })
-
-        return user
     }
 
-    // TODO: Duplicate code with RegisterFragment
+    /**
+     * Get the user's ID token from Firebase Authentication.
+     * @param onTokenReceived Callback function to handle the received token.
+     */
     private fun getUserToken(onTokenReceived: (String?) -> Unit) {
         auth.currentUser?.getIdToken( true)
             ?.addOnCompleteListener { tokenTask ->
                 if (tokenTask.isSuccessful) {
                     val idToken = tokenTask.result?.token
-                    Log.d("LoginFragment", "ID Token: $idToken")
+                    Log.d("RegisterFragment", "ID Token: $idToken")
                     onTokenReceived(idToken)
                 } else {
-                    Log.e("LoginFragment", "Failed to get ID token: ${tokenTask.exception?.message}")
+                    Log.e("RegisterFragment", "Failed to get ID token: ${tokenTask.exception?.message}")
                     onTokenReceived(null)
                 }
             } ?: onTokenReceived(null)
+        return
     }
 }
