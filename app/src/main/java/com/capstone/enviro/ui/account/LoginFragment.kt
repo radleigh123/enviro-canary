@@ -74,9 +74,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                     val uid = it.uid
                                     val email = it.email
 
-                                    SessionManager.saveUserIdSession(requireContext(), uid.toString())
                                     Log.d("LoginFragment", "User ID: $uid, Email: $email")
-                                    saveLoggedUser(email.toString())
+                                    saveLoggedUser(email.toString(), uid.toString())
                                 }
 
                                 Log.d("LoginFragment", "Login successful")
@@ -109,7 +108,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         _binding = null
     }
 
-    private fun saveLoggedUser(email: String) {
+    private fun saveLoggedUser(email: String, uid: String) {
         val tokenManager = TokenManager(requireContext())
         val userService = RetrofitClient.createService<UserService>(tokenManager)
 
@@ -123,6 +122,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     user = response.body()
                     Log.d("LoginFragment", "User retrieved: $user")
                     SessionManager.saveUserSession(requireContext(), user)
+                    SessionManager.saveUserIdSession(requireContext(), uid)
                 } else {
                     Log.e("LoginFragment", "Failed to retrieve user: ${response.errorBody()?.string()}")
                 }

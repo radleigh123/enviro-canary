@@ -10,15 +10,19 @@ import android.view.MenuItem
 import com.capstone.enviro.SessionManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.capstone.enviro.MainActivity
 import com.capstone.enviro.R
 import com.capstone.enviro.data.remote.RetrofitClient
 import com.capstone.enviro.data.remote.TokenManager
 import com.capstone.enviro.databinding.ActivityYouEditBinding
+import com.capstone.enviro.domain.model.ActivityLog
 import com.capstone.enviro.domain.model.Address
 import com.capstone.enviro.domain.model.ContactInfo
 import com.capstone.enviro.domain.model.PhysicalAttributes
+import com.capstone.enviro.domain.model.TimeStamp
 import com.capstone.enviro.domain.model.User
 import com.capstone.enviro.domain.service.UserService
+import com.capstone.enviro.utils.parseDate
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import retrofit2.Call
@@ -124,13 +128,24 @@ class YouEditActivity : AppCompatActivity() {
         var weight = binding.tfWeight.editText?.text.toString()
         var age = binding.tfAge.editText?.text.toString()
 
+        // TODO: Refactor string extraction on logs
         val userId = user["userId"].toString()
         Log.d("YouEditActivity", "User ID: $userId")
         val call = userService.updateUserByUserId(userId, User(
             userId = userId,
             email = user["email"].toString(),
             name = "$fName $lName",
-            profilePicture = user["profilePicture"].toString(),
+            roles = user["roles"]?.split(",") ?: listOf("USER"),
+            accountStatus = user["accountStatus"].toString(),
+            activityLog = user["activityLog"]?.split(",")?.map {
+                ActivityLog(
+                    action = it,
+                    timestamp = parseDate(user["lastLogin"].toString())
+                ) } ?: listOf(),
+            lastLogin = parseDate(user["lastLogin"].toString()),
+            loginProvider = user["loginProvider"].toString(),
+            createdAt = parseDate(user["createdAt"].toString()),
+            updatedAt = parseDate(user["updatedAt"].toString()),
             physicalAttributes = PhysicalAttributes(
                 age = age.toIntOrNull() ?: user["age"]?.toIntOrNull(),
                 weight = weight.toDoubleOrNull() ?: user["weight"]?.toDoubleOrNull(),
@@ -160,7 +175,16 @@ class YouEditActivity : AppCompatActivity() {
                             userId = userId,
                             email = user["email"].toString(),
                             name = "$fName $lName",
-                            profilePicture = user["profilePicture"].toString(),
+                            roles = user["roles"]?.split(",") ?: listOf("USER"),
+                            accountStatus = user["accountStatus"].toString(),
+                            activityLog = user["activityLog"]?.split(",")?.map { ActivityLog(
+                                action = it,
+                                timestamp = parseDate(user["lastLogin"].toString())
+                            ) } ?: listOf(),
+                            lastLogin = parseDate(user["lastLogin"].toString()),
+                            loginProvider = user["loginProvider"].toString(),
+                            createdAt = parseDate(user["createdAt"].toString()),
+                            updatedAt = parseDate(user["updatedAt"].toString()),
                             physicalAttributes = PhysicalAttributes(
                                 age = age.toIntOrNull() ?: user["age"]?.toIntOrNull(),
                                 weight = weight.toDoubleOrNull() ?: user["weight"]?.toDoubleOrNull(),
@@ -208,6 +232,11 @@ class YouEditActivity : AppCompatActivity() {
             R.id.action_done -> {
                 Log.d("YouEditActivity", "Done clicked")
                 saveUserData()
+                // Go to Home
+                val intent = Intent(this, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                finish() // Close the YouEditActivity or Prevent going back to it
                 true
             }
             else -> super.onOptionsItemSelected(item)

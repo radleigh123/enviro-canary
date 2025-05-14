@@ -27,6 +27,14 @@ object SessionManager {
             putString("email", user?.email)
             putString("name", user?.name)
 
+            putString("roles", user?.roles?.joinToString(","))
+            putString("accountStatus", user?.accountStatus)
+            putString("activityLog", user?.activityLog?.joinToString(","))
+            putString("lastLogin", user?.lastLogin?.toString())
+            putString("loginProvider", user?.loginProvider)
+            putString("createdAt", user?.createdAt?.toString())
+            putString("updatedAt", user?.updatedAt?.toString())
+
             // Physical info
             putString("age", user?.physicalAttributes?.age.toString())
             putString("weight", user?.physicalAttributes?.weight.toString())
@@ -59,7 +67,14 @@ object SessionManager {
             uid=${KEY_UID},
             userId=${user?.userId},
             email=${user?.email}, 
-            name=${user?.name}, 
+            name=${user?.name},
+            roles=${user?.roles?.joinToString(",")},
+            accountStatus=${user?.accountStatus},
+            activityLog=${user?.activityLog?.joinToString(",")},
+            lastLogin=${user?.lastLogin},
+            loginProvider=${user?.loginProvider},
+            createdAt=${user?.createdAt},
+            updatedAt=${user?.updatedAt},
             age=${user?.physicalAttributes?.age},
             weight=${user?.physicalAttributes?.weight},
             height=${user?.physicalAttributes?.height},
@@ -95,6 +110,13 @@ object SessionManager {
             "userId" to prefs.getString("userId", null),
             "email" to prefs.getString("email", null),
             "name" to prefs.getString("name", null),
+            "roles" to prefs.getString("roles", null),
+            "accountStatus" to prefs.getString("accountStatus", null),
+            "activityLog" to prefs.getString("activityLog", null),
+            "lastLogin" to prefs.getString("lastLogin", null),
+            "loginProvider" to prefs.getString("loginProvider", null),
+            "createdAt" to prefs.getString("createdAt", null),
+            "updatedAt" to prefs.getString("updatedAt", null),
             "age" to prefs.getString("age", null),
             "weight" to prefs.getString("weight", null),
             "height" to prefs.getString("height", null),

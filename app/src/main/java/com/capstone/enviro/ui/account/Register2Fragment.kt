@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.capstone.enviro.MainActivity
 import com.capstone.enviro.data.remote.RetrofitClient
 import com.capstone.enviro.data.remote.TokenManager
 import com.capstone.enviro.databinding.FragmentRegister2Binding
@@ -79,21 +80,30 @@ class Register2Fragment : Fragment() {
                     if (task.isSuccessful) {
                         val firebaseUser = auth.currentUser
 
-                        firebaseUser?.let {
-                            storeUserData(
-                                email = email,
-                                name = "$fName $lName",
-                                phone = phone,
-                                street = street,
-                                city = city,
-                                province = province,
-                                country = country,
-                                zipCode = zipCode
-                            )
-                        }
+                        getUserToken { idToken ->
+                            if (idToken != null) {
+                                val uid = firebaseUser?.uid
+                                val email = firebaseUser?.email
 
-                        Log.d("RegisterFragment", "Registration successful")
-                        findNavController().navigate(R.id.action_Register2Fragment_to_LoginFragment)
+                                // Store user data in the database
+                                storeUserData(
+                                    userId = uid.toString(),
+                                    email = email.toString(),
+                                    name = "$fName $lName",
+                                    phone = phone,
+                                    street = street,
+                                    city = city,
+                                    province = province,
+                                    country = country,
+                                    zipCode = zipCode
+                                )
+
+                                Log.d("RegisterFragment", "Registration successful")
+                                findNavController().navigate(R.id.action_Register2Fragment_to_LoginFragment)
+                            } else {
+                                Snackbar.make(view, "Failed to get ID token", Snackbar.LENGTH_SHORT).show()
+                            }
+                        }
                     } else {
                         Log.w("RegisterFragment", "Registration failed", task.exception)
                         if (task.exception is FirebaseAuthInvalidCredentialsException) {
@@ -121,6 +131,7 @@ class Register2Fragment : Fragment() {
     }
 
     private fun storeUserData(
+        userId: String,
         email: String,
         name: String,
         phone: String,
@@ -134,6 +145,7 @@ class Register2Fragment : Fragment() {
         val userService = RetrofitClient.createService<UserService>(tokenManager)
 
         val user = User(
+            userId = userId,
             email = email,
             name = name,
             roles = listOf("USER"),
@@ -180,5 +192,20 @@ class Register2Fragment : Fragment() {
                 Log.e("RegisterFragment2", "Failed to store user data: ${t.message}")
             }
         })
+    }
+
+    private fun getUserToken(onTokenReceived: (String?) -> Unit) {
+        auth.currentUser?.getIdToken( true)
+            ?.addOnCompleteListener { tokenTask ->
+                if (tokenTask.isSuccessful) {
+                    val idToken = tokenTask.result?.token
+                    Log.d("RegisterFragment", "ID Token: $idToken")
+                    onTokenReceived(idToken)
+                } else {
+                    Log.e("RegisterFragment", "Failed to get ID token: ${tokenTask.exception?.message}")
+                    onTokenReceived(null)
+                }
+            } ?: onTokenReceived(null)
+        return
     }
 }

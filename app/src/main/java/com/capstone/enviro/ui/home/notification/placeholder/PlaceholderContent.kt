@@ -1,6 +1,7 @@
 package com.capstone.enviro.ui.home.notification.placeholder
 
-import com.capstone.enviro.ui.home.notification.model.Notification
+import com.capstone.enviro.domain.model.Notification
+import com.capstone.enviro.utils.parseDate
 import java.util.ArrayList
 import java.util.HashMap
 
@@ -37,7 +38,7 @@ object PlaceholderContent {
     }
 
     private fun createNotification(position: Int): Notification {
-        return Notification(position.toString(), "Item " + position, makeMessage("Details about Item: $position"), "2023-10-01", "12:00 PM", false)
+        return Notification(position.toString(), "Item " + position, makeMessage("Details about Item: $position"), parseDate("2023-10-01"), false)
     }
 
     private fun makeMessage(message: String): String {

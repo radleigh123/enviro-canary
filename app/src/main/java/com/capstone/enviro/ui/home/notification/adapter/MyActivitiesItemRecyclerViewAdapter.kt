@@ -7,7 +7,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.enviro.databinding.ItemActivitiesBinding
-import com.capstone.enviro.ui.home.notification.model.Activities
+import com.capstone.enviro.domain.model.Activities
 
 class MyActivitiesItemRecyclerViewAdapter(
     private val values: List<Activities>,
@@ -28,9 +28,9 @@ class MyActivitiesItemRecyclerViewAdapter(
         val item = values[position]
 
         holder.titleView.text = item.title
-        val startDate: Int = item.startDate.split("-")[2].toInt()
-        val endDate: Int = item.endDate.split("-")[2].toInt()
-        holder.daysLeft.text = "${endDate - startDate} days left"
+        val startDate = item.startDate.toString()
+        val endDate = item.endDate.toString()
+        holder.daysLeft.text = "${endDate} ${startDate} days left"
 
         holder.progressView.progress = item.progress
         holder.typeView.setImageResource(
