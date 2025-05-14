@@ -1,22 +1,13 @@
 package com.capstone.enviro.ui.home
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.MenuProvider
-import androidx.lifecycle.Lifecycle
+import androidx.fragment.app.Fragment
 import com.capstone.enviro.MainActivity
-import com.capstone.enviro.R
+import com.capstone.enviro.SessionManager
 import com.capstone.enviro.databinding.FragmentHomeBinding
-import com.capstone.enviro.ui.settings.SettingsActivity
 
 class HomeFragment : Fragment() {
 
@@ -35,7 +26,18 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         (activity as MainActivity).supportActionBar?.show()
 
+        updateUI()
+
         return binding.root
+    }
+
+    private fun updateUI() {
+        val context = requireContext()
+        val user: Map<String, String?> = SessionManager.getUserSession(context)
+
+        val name = user["name"] ?: "NULL".toString()
+
+        binding.heroGreeting.text = "Hello, $name!"
     }
 
     override fun onDestroy() {

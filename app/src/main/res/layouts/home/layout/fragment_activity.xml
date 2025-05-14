@@ -5,13 +5,16 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.home.ActivityFragment"
-    android:background="@color/black_20">
+    android:background="@color/black_20"
+    >
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:fillViewport="true" >
+        android:fillViewport="true"
+        android:elevation="0dp"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -31,5 +34,18 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:contentDescription="Add new activity"
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:elevation="6dp"
+        android:visibility="visible"
+        android:layout_marginHorizontal="@dimen/fab_margin"
+        android:layout_marginBottom="105dp"
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

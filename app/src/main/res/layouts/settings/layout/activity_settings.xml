@@ -111,7 +111,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_profile_96"
+                        android:src="@drawable/icons8_night_96"
                         />
 
                     <TextView
@@ -160,7 +160,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_profile_96"
+                        android:src="@drawable/icons8_push_notifications_96"
                         />
 
                     <TextView
@@ -201,7 +201,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_profile_96"
+                        android:src="@drawable/icons8_logout_96"
                         android:contentDescription="Log out icon" />
 
                     <TextView

@@ -11,7 +11,7 @@ import java.util.HashMap
  *
  * TODO: Replace all uses of this class before publishing your app.
  */
-object PlaceholderContent {
+object PlaceholderNotification {
 
     /**
      * An array of sample (placeholder) items.

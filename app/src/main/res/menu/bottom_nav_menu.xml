@@ -15,7 +15,7 @@
 
     <item
         android:id="@+id/navigation_record"
-        android:icon="@drawable/ic_record_24"
+        android:icon="@drawable/logo"
         android:title="@string/bottom_record"
         />
 

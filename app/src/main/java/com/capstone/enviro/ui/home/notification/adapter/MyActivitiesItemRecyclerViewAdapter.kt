@@ -10,7 +10,7 @@ import com.capstone.enviro.databinding.ItemActivitiesBinding
 import com.capstone.enviro.domain.model.Activities
 
 class MyActivitiesItemRecyclerViewAdapter(
-    private val values: List<Activities>,
+    private val values: MutableList<Activities>,
     private val onItemClick: (Activities) -> Unit
 ): RecyclerView.Adapter<MyActivitiesItemRecyclerViewAdapter.ViewHolder>() {
 
@@ -35,12 +35,12 @@ class MyActivitiesItemRecyclerViewAdapter(
         holder.progressView.progress = item.progress
         holder.typeView.setImageResource(
             when (item.type) {
-//                "Running" -> com.capstone.enviro.R.drawable.ic_running
-//                "Cycling" -> com.capstone.enviro.R.drawable.ic_cycling
-//                "Yoga" -> com.capstone.enviro.R.drawable.ic_yoga
-//                "HIIT" -> com.capstone.enviro.R.drawable.ic_hiit
-                "Pilates" -> com.capstone.enviro.R.drawable.ic_profile_96
-                else -> com.capstone.enviro.R.drawable.ic_activities_96
+                "Running" -> com.capstone.enviro.R.drawable.icons8_act1_192
+                "Cycling" -> com.capstone.enviro.R.drawable.icons8_act2_192
+                "Yoga" -> com.capstone.enviro.R.drawable.icons8_act3_192
+                "HIIT" -> com.capstone.enviro.R.drawable.icons8_act4_192
+                "Pilates" -> com.capstone.enviro.R.drawable.icons8_act5_192
+                else -> com.capstone.enviro.R.drawable.icons8_act1_192
             }
         )
 

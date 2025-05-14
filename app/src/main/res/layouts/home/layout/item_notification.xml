@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="Menu options"
-        android:src="@drawable/ic_home_24"
+        android:src="@drawable/icons8_menu_vertical_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
