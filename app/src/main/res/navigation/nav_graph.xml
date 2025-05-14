@@ -19,12 +19,6 @@
         />
 
     <fragment
-        android:id="@+id/navigation_record"
-        android:name="com.capstone.enviro.ui.home.RecordFragment"
-        tools:layout="@layout/fragment_record"
-        />
-
-    <fragment
         android:id="@+id/navigation_activities"
         android:name="com.capstone.enviro.ui.home.ActivityFragment"
         tools:layout="@layout/fragment_activity"

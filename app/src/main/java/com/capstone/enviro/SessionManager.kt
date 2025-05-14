@@ -3,6 +3,7 @@ package com.capstone.enviro
 import android.content.Context
 import android.util.Log
 import androidx.core.content.edit
+import com.capstone.enviro.domain.model.User
 
 object SessionManager {
     private const val PREF_NAME = "user_session"
@@ -18,6 +19,18 @@ object SessionManager {
             .getString(KEY_UID, null)
     }
 
+    fun saveUserSession(context: Context, user: User?) {
+        val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        prefs.edit().apply {
+            putString(KEY_UID, user?.userId)
+            putString("email", user?.email)
+            putString("name", user?.name)
+            apply()
+        }
+        Log.d("SessionManager", "User session saved: uid=${user?.userId}, email=${user?.email}, name=${user?.name}")
+    }
+
+/*
     fun saveUserSession(context: Context, uid: String, email: String?, displayName: String?) {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         prefs.edit().apply {
@@ -28,6 +41,7 @@ object SessionManager {
         }
         Log.d("SessionManager", "User session saved: uid=$uid, email=$email, name=$displayName")
     }
+*/
 
     fun getUserSession(context: Context): Map<String, String?> {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)

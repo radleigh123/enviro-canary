@@ -26,10 +26,29 @@
         android:label="register fragment"
         tools:layout="@layout/fragment_register"
         >
-
+        <action
+            android:id="@+id/action_RegisterFragment_to_Register2Fragment"
+            app:destination="@+id/Register2Fragment"
+            />
         <action
             android:id="@+id/action_RegisterFragment_to_LoginFragment"
-            app:destination="@+id/LoginFragment"
+            app:destination="@id/LoginFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/Register2Fragment"
+        android:name="com.capstone.enviro.ui.account.Register2Fragment"
+        android:label="Register 2 Fragment"
+        tools:layout="@layout/fragment_register2"
+        >
+        <action
+            android:id="@+id/action_Register2Fragment_to_LoginFragment"
+            app:destination="@id/LoginFragment"
+            />
+        <action
+            android:id="@+id/action_Register2Fragment_to_RegisterFragment"
+            app:destination="@id/RegisterFragment"
             />
     </fragment>
 

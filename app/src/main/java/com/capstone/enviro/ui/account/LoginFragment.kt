@@ -11,10 +11,16 @@ import androidx.navigation.fragment.findNavController
 import com.capstone.enviro.MainActivity
 import com.capstone.enviro.R
 import com.capstone.enviro.SessionManager
+import com.capstone.enviro.data.remote.RetrofitClient
 import com.capstone.enviro.data.remote.TokenManager
 import com.capstone.enviro.databinding.FragmentLoginBinding
+import com.capstone.enviro.domain.model.User
+import com.capstone.enviro.domain.service.UserService
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 /**
  * A login [Fragment] subclass as the default destination in the navigation.
@@ -62,10 +68,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     if (task.isSuccessful) {
                         getUserToken { idToken ->
                             if (idToken != null) {
-                                // Save the token using TokenManager
                                 tokenManager.saveToken(idToken)
-
-                                Log.d("LoginFragment", "Login successful")
+/*
                                 // TODO: displayName is empty, possibility because Firebase Auth has no displayName
                                 auth.currentUser?.let {
                                     val uid = it.uid
@@ -79,7 +83,21 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                         displayName = displayName
                                     )
                                 }
+*/
+                                var user: User?
 
+                                val currentUser = auth.currentUser
+                                currentUser?.let {
+                                    val uid = it.uid
+                                    val email = it.email ?: ""
+
+                                    user = getLoggedInUser(uid)
+
+                                    SessionManager.saveUserSession(context = requireContext(), user = user)
+                                    Log.d("LoginFragment", "User session saved: uid=$uid, email=$email")
+                                }
+
+                                Log.d("LoginFragment", "Login successful")
                                 val intent = Intent(requireContext(), MainActivity::class.java)
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                                 startActivity(intent)
@@ -109,6 +127,33 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         _binding = null
     }
 
+    private fun getLoggedInUser(uid: String): User? {
+        var user: User? = null
+
+        val tokenManager = TokenManager(requireContext())
+        val userService = RetrofitClient.createService<UserService>(tokenManager)
+
+        val call = userService.getUserById(uid)
+        call.enqueue(object: Callback<User> {
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                // TODO: TODO("SAMPLE FORCED COMMENT")
+                if (response.isSuccessful) {
+                    user = response.body()
+                    Log.d("LoginFragment", "User retrieved: $user")
+                } else {
+                    Log.e("LoginFragment", "Failed to retrieve user: ${response.errorBody()?.string()}")
+                }
+            }
+
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                Log.e("LoginFragment", "Error retrieving user: ${t.message}")
+            }
+        })
+
+        return user
+    }
+
+    // TODO: Duplicate code with RegisterFragment
     private fun getUserToken(onTokenReceived: (String?) -> Unit) {
         auth.currentUser?.getIdToken( true)
             ?.addOnCompleteListener { tokenTask ->
