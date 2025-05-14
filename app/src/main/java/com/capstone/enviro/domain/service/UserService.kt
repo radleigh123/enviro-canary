@@ -25,4 +25,7 @@ interface UserService {
     @GET("/user/email/{email}")
     fun getUserByEmail(@Path("email") email: String): Call<User>
 
+    @PUT("/user/uid/{userId}")
+    fun updateUserByUserId(@Path("userId") userId: String, @Body user: User): Call<User>
+
 }

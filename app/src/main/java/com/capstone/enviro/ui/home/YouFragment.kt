@@ -46,6 +46,14 @@ class YouFragment : Fragment() {
         val name = user["name"] ?: uid
         val email = user["email"] ?: "NULL".toString()
 
+        // Physical info
+        val height = user["height"] ?: "NULL".toString()
+        val weight = user["weight"] ?: "NULL".toString()
+        val age = user["age"] ?: "NULL".toString()
+
+        // Biography
+        val biography = user["biography"] ?: "NULL".toString()
+
         // Contact info
         val phone = user["phone"] ?: "NULL".toString()
         val street = user["street"] ?: "NULL".toString()
@@ -56,10 +64,19 @@ class YouFragment : Fragment() {
 
         binding.tvName.text = name
         binding.tvEmail.text = email
+        binding.tvPersonalHeight.text = height
+        binding.tvPersonalWeight.text = weight
+        binding.tvPersonalAge.text = age
+        binding.tvPersonalBiography.text = biography
         binding.tvPersonalPhone.text = phone
         binding.tvPersonalAddressStreet.text = street
         binding.tvPersonalAddressCity.text = city
         binding.tvPersonalAddressProvince.text = province
         binding.tvPersonalAddressCountry.text = country
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateUserData()
     }
 }

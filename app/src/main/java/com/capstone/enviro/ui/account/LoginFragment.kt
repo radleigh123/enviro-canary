@@ -70,10 +70,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             if (idToken != null) {
                                 tokenManager.saveToken(idToken)
 
-                                SessionManager.saveUserIdSession(requireContext(), idToken)
+                                auth.currentUser?.let {
+                                    val uid = it.uid
+                                    val email = it.email
 
-                                val currentUser = auth.currentUser?.let {
-                                    saveLoggedUser(it.email.toString())
+                                    SessionManager.saveUserIdSession(requireContext(), uid.toString())
+                                    Log.d("LoginFragment", "User ID: $uid, Email: $email")
+                                    saveLoggedUser(email.toString())
                                 }
 
                                 Log.d("LoginFragment", "Login successful")
@@ -120,7 +123,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     user = response.body()
                     Log.d("LoginFragment", "User retrieved: $user")
                     SessionManager.saveUserSession(requireContext(), user)
-                    SessionManager.saveIdSession(requireContext(), user?.id.toString())
                 } else {
                     Log.e("LoginFragment", "Failed to retrieve user: ${response.errorBody()?.string()}")
                 }

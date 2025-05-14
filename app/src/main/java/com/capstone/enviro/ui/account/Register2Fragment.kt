@@ -14,7 +14,6 @@ import com.capstone.enviro.databinding.FragmentRegister2Binding
 import com.capstone.enviro.domain.model.ActivityLog
 import com.capstone.enviro.domain.model.Address
 import com.capstone.enviro.domain.model.ContactInfo
-import com.capstone.enviro.domain.model.MongoId
 import com.capstone.enviro.domain.model.User
 import com.capstone.enviro.domain.service.UserService
 import com.capstone.enviro.utils.getMongoDBDate

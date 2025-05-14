@@ -16,7 +16,6 @@ import com.capstone.enviro.data.remote.TokenManager
 import com.capstone.enviro.databinding.ActivityYouEditBinding
 import com.capstone.enviro.domain.model.Address
 import com.capstone.enviro.domain.model.ContactInfo
-import com.capstone.enviro.domain.model.MongoId
 import com.capstone.enviro.domain.model.PhysicalAttributes
 import com.capstone.enviro.domain.model.User
 import com.capstone.enviro.domain.service.UserService
@@ -104,53 +103,82 @@ class YouEditActivity : AppCompatActivity() {
         val userService = RetrofitClient.createService<UserService>(tokenManager)
         val user = SessionManager.getUserSession(this)
 
-        val fName = binding.tfFName.editText?.text.toString()
-        val lName = binding.tfLName.editText?.text.toString()
-        val street = binding.tfStreet.editText?.text.toString()
-        val city = binding.tfCity.editText?.text.toString()
-        val province = binding.tfProvince.editText?.text.toString()
-        val phone = binding.tfPhone.editText?.text.toString()
-        val bio = binding.tfBio.editText?.text.toString()
-        val height = binding.tfHeight.editText?.text.toString()
-        val weight = binding.tfWeight.editText?.text.toString()
-        val age = binding.tfAge.editText?.text.toString()
+        var fName = binding.tfFName.editText?.text.toString().trim()
+        var lName = binding.tfLName.editText?.text.toString().trim()
 
-        // Update user data by calling the API by id
-        val uid = user["uid"].toString()
+        // TODO: temp
+        if (fName.isEmpty()) {
+            fName = user["name"]?.split(" ")?.get(0) ?: "NULL"
+        }
 
-        val call = userService.updateUserById(uid, User(
-            id = MongoId(
-                oid = uid
-            ),
-            userId = user["userId"].toString(),
+        if (lName.isEmpty()) {
+            lName = user["name"]?.split(" ")?.get(1) ?: "NULL"
+        }
+
+        var street = binding.tfStreet.editText?.text.toString()
+        var city = binding.tfCity.editText?.text.toString()
+        var province = binding.tfProvince.editText?.text.toString()
+        var phone = binding.tfPhone.editText?.text.toString()
+        var bio = binding.tfBio.editText?.text.toString()
+        var height = binding.tfHeight.editText?.text.toString()
+        var weight = binding.tfWeight.editText?.text.toString()
+        var age = binding.tfAge.editText?.text.toString()
+
+        val userId = user["userId"].toString()
+        Log.d("YouEditActivity", "User ID: $userId")
+        val call = userService.updateUserByUserId(userId, User(
+            userId = userId,
             email = user["email"].toString(),
             name = "$fName $lName",
             profilePicture = user["profilePicture"].toString(),
             physicalAttributes = PhysicalAttributes(
-                age = age.toIntOrNull(),
-                weight = weight.toDoubleOrNull(),
-                height = height.toIntOrNull(),
+                age = age.toIntOrNull() ?: user["age"]?.toIntOrNull(),
+                weight = weight.toDoubleOrNull() ?: user["weight"]?.toDoubleOrNull(),
+                height = height.toIntOrNull() ?: user["height"]?.toIntOrNull(),
                 bloodType = user["bloodType"].toString(),
             ),
             contactInfo = ContactInfo(
-                phone = phone,
+                phone = phone.ifEmpty { user["phone"].toString() },
                 address = Address(
-                    street = street,
-                    city = city,
-                    province = province,
+                    street = street.ifEmpty { user["street"].toString() },
+                    city = city.ifEmpty { user["city"].toString() },
+                    province = province.ifEmpty { user["province"].toString() },
                     country = user["country"].toString(),
                     zipCode = user["zipCode"].toString()
                 )
-            )
+            ),
+            biography = bio.ifEmpty { user["biography"].toString() }
         ))
 
         call.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful) {
+                    // TODO: This needs FIX, response returns the older body
                     val updatedUser = response.body()
                     if (updatedUser != null) {
-                        SessionManager.saveUserSession(this@YouEditActivity, updatedUser)
-                        Log.d("YouEditActivity", "User data updated successfully")
+                        SessionManager.saveUserSession(this@YouEditActivity, User(
+                            userId = userId,
+                            email = user["email"].toString(),
+                            name = "$fName $lName",
+                            profilePicture = user["profilePicture"].toString(),
+                            physicalAttributes = PhysicalAttributes(
+                                age = age.toIntOrNull() ?: user["age"]?.toIntOrNull(),
+                                weight = weight.toDoubleOrNull() ?: user["weight"]?.toDoubleOrNull(),
+                                height = height.toIntOrNull() ?: user["height"]?.toIntOrNull(),
+                                bloodType = user["bloodType"].toString(),
+                            ),
+                            contactInfo = ContactInfo(
+                                phone = phone.ifEmpty { user["phone"].toString() },
+                                address = Address(
+                                    street = street.ifEmpty { user["street"].toString() },
+                                    city = city.ifEmpty { user["city"].toString() },
+                                    province = province.ifEmpty { user["province"].toString() },
+                                    country = user["country"].toString(),
+                                    zipCode = user["zipCode"].toString()
+                                )
+                            ),
+                            biography = bio.ifEmpty { user["biography"].toString() }
+                        ))
                     } else {
                         Log.e("YouEditActivity", "Failed to update user data")
                     }
@@ -159,12 +187,10 @@ class YouEditActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: retrofit2.Call<User>, t: Throwable) {
+            override fun onFailure(call: Call<User>, t: Throwable) {
                 Log.e("YouEditActivity", "Network error: ${t.message}")
             }
         })
-
-        Log.d("YouEditActivity", "User data saved")
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -23,7 +23,6 @@ object SessionManager {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         prefs.edit().apply {
             // Basic info
-            putString(KEY_UID, user?.id.toString())
             putString("userId", user?.userId)
             putString("email", user?.email)
             putString("name", user?.name)
@@ -57,7 +56,7 @@ object SessionManager {
         }
         Log.d("SessionManager", """
             User session saved: 
-            uid=${user?.id},
+            uid=${KEY_UID},
             userId=${user?.userId},
             email=${user?.email}, 
             name=${user?.name}, 
@@ -80,26 +79,19 @@ object SessionManager {
         """.trimIndent())
     }
 
-    fun saveIdSession(context: Context, uid: String) {
-        val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        prefs.edit().apply {
-            putString(KEY_UID, uid)
-            apply()
-        }
-    }
-
     fun saveUserIdSession(context: Context, userId: String) {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         prefs.edit().apply {
             putString("userId", userId)
             apply()
         }
+        Log.d("SessionManager", "User ID session saved: $userId")
     }
 
     fun getUserSession(context: Context): Map<String, String?> {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         return mapOf(
-            KEY_UID to prefs.getString(KEY_UID, null),
+            "uid" to prefs.getString(KEY_UID, null),
             "userId" to prefs.getString("userId", null),
             "email" to prefs.getString("email", null),
             "name" to prefs.getString("name", null),
